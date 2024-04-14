@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_worldwideclock">
+
+    <fragment
+        android:id="@+id/navigation_worldwideclock"
+        android:name="uqac.dim.clockapp.ui.worldwideclock.WorldwideclockFragment"
+        android:label="@string/title_worldwideclock"
+        tools:layout="@layout/fragment_worldwideclock" />
+
+    <fragment
+        android:id="@+id/navigation_alarms"
+        android:name="uqac.dim.clockapp.ui.alarms.AlarmsFragment"
+        android:label="@string/title_alarms"
+        tools:layout="@layout/fragment_alarms" />
+
+    <fragment
+        android:id="@+id/navigation_timer"
+        android:name="uqac.dim.clockapp.ui.timer.TimerFragment"
+        android:label="@string/title_timer"
+        tools:layout="@layout/fragment_timer" />
+
+    <fragment
+        android:id="@+id/navigation_stopwatch"
+        android:name="uqac.dim.clockapp.ui.stopwatch.StopwatchFragment"
+        android:label="@string/title_stopwatch"
+        tools:layout="@layout/fragment_stopwatch" />
+</navigation>
