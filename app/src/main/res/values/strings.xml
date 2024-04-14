@@ -1,9 +1,18 @@
 <resources>
     <string name="app_name">clockapp</string>
     <!-- TODO: Remove or change this placeholder text -->
+
+    <!-- Bottom nav bar -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_worldwideclock">Worldwide Clock</string>
     <string name="title_alarms">Alarms</string>
     <string name="title_timer">Timer</string>
     <string name="title_stopwatch">Stopwatch</string>
+
+    <!-- Stopwatch -->
+    <string name="Start">Start</string>
+    <string name="Stop">Stop</string>
+    <string name="Reset">Reset</string>
+    <string name="Lap">Lap</string>
+    <string name="default_stopwatch_time">00:00:00</string>
 </resources>
