@@ -1,10 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".ui.timer.TimerFragment">
+
+    <LinearLayout
+        android:id="@+id/timePickerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"
+        android:alpha="1.0"> <!-- Use alpha to control graying out -->
+
+        <NumberPicker
+            android:id="@+id/hoursPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:enabled="true" />
+
+        <NumberPicker
+            android:id="@+id/minutesPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:enabled="true" />
+
+        <NumberPicker
+            android:id="@+id/secondsPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:enabled="true" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textViewTimer"
@@ -13,7 +46,9 @@
         android:textSize="48sp"
         android:paddingTop="100dp"
         android:paddingBottom="80dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@id/timePickerLayout"
+        android:layout_centerHorizontal="true"
+        android:text="00:00:00" />
 
     <Button
         android:id="@+id/leftButton"

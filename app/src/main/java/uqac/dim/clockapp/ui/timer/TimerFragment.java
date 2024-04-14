@@ -1,11 +1,11 @@
 package uqac.dim.clockapp.ui.timer;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,15 +14,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Locale;
 
+import uqac.dim.clockapp.R;
 import uqac.dim.clockapp.databinding.FragmentTimerBinding;
 
 public class TimerFragment extends Fragment {
 
     private FragmentTimerBinding binding;
     private TimerViewModel timerViewModel;
-    private CountDownTimer countDownTimer;
-    private boolean timerRunning;
-    private long startTimeInMillis = 600000; // Initial timer duration in milliseconds (10 minutes)
+    private NumberPicker hoursPicker;
+    private NumberPicker minutesPicker;
+    private NumberPicker secondsPicker;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,78 +37,68 @@ public class TimerFragment extends Fragment {
 
         timerViewModel = new ViewModelProvider(this).get(TimerViewModel.class);
 
-        // Observe timer text updates
-        timerViewModel.getText().observe(getViewLifecycleOwner(), timerText -> {
-            textViewTimer.setText(timerText);
-        });
+        // Initialize NumberPickers
+        hoursPicker = binding.timePickerLayout.findViewById(R.id.hoursPicker);
+        minutesPicker = binding.timePickerLayout.findViewById(R.id.minutesPicker);
+        secondsPicker = binding.timePickerLayout.findViewById(R.id.secondsPicker);
+
+        // Set initial values and wrap selector wheels
+        hoursPicker.setMinValue(0);
+        hoursPicker.setMaxValue(24);
+        hoursPicker.setWrapSelectorWheel(true);
+
+        minutesPicker.setMinValue(0);
+        minutesPicker.setMaxValue(59);
+        minutesPicker.setWrapSelectorWheel(true);
+
+        secondsPicker.setMinValue(0);
+        secondsPicker.setMaxValue(59);
+        secondsPicker.setWrapSelectorWheel(true);
 
         leftButton.setOnClickListener(view -> {
             resetTimer();
         });
 
         rightButton.setOnClickListener(view -> {
-            if (timerRunning) {
-                pauseTimer();
-            } else {
-                startTimer();
+            if (timerViewModel.getTimerState() == TimerState.INACTIVE) {
+                int hours = hoursPicker.getValue();
+                int minutes = minutesPicker.getValue();
+                int seconds = secondsPicker.getValue();
+                long totalMilliseconds = (hours * 3600 + minutes * 60 + seconds) * 1000L;
+                timerViewModel.startTimer(totalMilliseconds, requireContext());
+                rightButton.setText("Pause");
+            } else if (timerViewModel.getTimerState() == TimerState.RUNNING) {
+                timerViewModel.pauseTimer();
+                rightButton.setText("Resume");
+            } else if (timerViewModel.getTimerState() == TimerState.PAUSED) {
+                timerViewModel.resumeTimer(requireContext());
+                rightButton.setText("Pause");
             }
         });
 
-        updateButtons();
+        // Observe timer text updates
+        timerViewModel.getText().observe(getViewLifecycleOwner(), timerText -> {
+            textViewTimer.setText(timerText);
+        });
+
+        // Observe timer state to enable/disable input fields
+        timerViewModel.getText().observe(getViewLifecycleOwner(), timerText -> {
+            boolean active = timerViewModel.getTimerState() != TimerState.INACTIVE;
+            hoursPicker.setEnabled(!active);
+            minutesPicker.setEnabled(!active);
+            secondsPicker.setEnabled(!active);
+        });
 
         return root;
     }
 
-    private void startTimer() {
-        countDownTimer = new CountDownTimer(startTimeInMillis, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                startTimeInMillis = millisUntilFinished;
-                updateTimerText(startTimeInMillis);
-            }
-
-            @Override
-            public void onFinish() {
-                timerRunning = false;
-                updateButtons();
-            }
-        }.start();
-
-        timerRunning = true;
-        updateButtons();
-    }
-
-    private void pauseTimer() {
-        countDownTimer.cancel();
-        timerRunning = false;
-        updateButtons();
-    }
-
     private void resetTimer() {
-        startTimeInMillis = 600000; // Reset timer to 10 minutes
-        updateTimerText(startTimeInMillis);
-        timerRunning = false;
-        updateButtons();
-    }
-
-    private void updateTimerText(long milliseconds) {
-        int minutes = (int) (milliseconds / 1000) / 60;
-        int seconds = (int) (milliseconds / 1000) % 60;
-        String timerText = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
-        timerViewModel.setText(timerText);
-    }
-
-    private void updateButtons() {
-        final Button leftButton = binding.leftButton;
-        final Button rightButton = binding.rightButton;
-
-        if (timerRunning) {
-            leftButton.setText(R.string.reset);
-            rightButton.setText(R.string.pause);
-        } else {
-            leftButton.setText(R.string.reset);
-            rightButton.setText(R.string.start);
-        }
+        Button rightButton = binding.rightButton;
+        timerViewModel.resetTimer();
+        hoursPicker.setValue(0);
+        minutesPicker.setValue(0);
+        secondsPicker.setValue(0);
+        rightButton.setText("Start");
     }
 
     @Override
