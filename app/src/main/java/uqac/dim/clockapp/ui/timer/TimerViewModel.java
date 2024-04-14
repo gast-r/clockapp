@@ -6,14 +6,18 @@ import androidx.lifecycle.ViewModel;
 
 public class TimerViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private MutableLiveData<String> text;
 
     public TimerViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is Timer fragment");
+        text = new MutableLiveData<>();
+        text.setValue("00:00");
     }
 
     public LiveData<String> getText() {
-        return mText;
+        return text;
+    }
+
+    public void setText(String timerText) {
+        text.setValue(timerText);
     }
 }
