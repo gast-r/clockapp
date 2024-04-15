@@ -52,6 +52,10 @@ public class StopwatchFragment extends Fragment {
 
         // Observe elapsed lap time updates
         stopwatchViewModel.getLapElapsedTime().observe(getViewLifecycleOwner(), lapElapsedTime -> {
+            if (stopwatchViewModel.getStopwatchState().getValue() != StopwatchState.RUNNING) {
+                return;
+            }
+
             String formattedTime = formatTime(lapElapsedTime);
             List<Long> lapTimes = stopwatchViewModel.getLapTimes().getValue();
             long lapTimesSize = !lapTimes.isEmpty() ? lapTimes.size() : 0;
@@ -63,7 +67,6 @@ public class StopwatchFragment extends Fragment {
                 linearLayoutLaps.addView(lapTimeTextView, 0);
             }
 
-            // Display last lap time
             TextView lastLapTimeTextView = new TextView(getContext());
             lastLapTimeTextView.setText(formatLapTime(lapElapsedTime, lapTimesSize + 1));
             linearLayoutLaps.addView(lastLapTimeTextView, 0);
@@ -98,6 +101,9 @@ public class StopwatchFragment extends Fragment {
                 rightButton.setOnClickListener(view -> {
                     stopwatchViewModel.pauseStopwatch();
                 });
+
+
+
                 break;
             case STOPPED:
                 leftButton.setText(R.string.Reset);
@@ -123,6 +129,10 @@ public class StopwatchFragment extends Fragment {
                 rightButton.setOnClickListener(view -> {
                     stopwatchViewModel.startStopwatch();
                 });
+
+                // hide lap times
+                LinearLayout linearLayoutLaps = binding.linearLayoutLapsList;
+                linearLayoutLaps.removeAllViews();
                 break;
         }
     }

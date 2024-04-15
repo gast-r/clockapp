@@ -113,7 +113,7 @@ public class TimerFragment extends Fragment {
             }
         });
 
-        updateTimerFromPickers();
+        resetTimer();
 
         return root;
     }
