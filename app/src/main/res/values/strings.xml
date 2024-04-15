@@ -4,8 +4,6 @@
 
     <!-- Bottom nav bar -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_worldwideclock">Worldwide Clock</string>
-    <string name="title_alarms">Alarms</string>
     <string name="title_timer">Timer</string>
     <string name="title_stopwatch">Stopwatch</string>
 
