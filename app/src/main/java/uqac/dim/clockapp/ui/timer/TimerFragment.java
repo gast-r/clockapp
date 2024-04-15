@@ -66,22 +66,13 @@ public class TimerFragment extends Fragment {
             textViewTimer.setText(formattedTime);
 
             // Check if timer has reached 0
-            if (elapsedTime <= 0) {
+            if (elapsedTime <= 0 && timerViewModel.getTimerState().getValue() == TimerState.RUNNING) {
+
                 // Send notification to the user
                 sendNotification();
 
-                // Reset the timer based on the input values
-                int hours = hoursPicker.getValue();
-                int minutes = minutesPicker.getValue();
-                int seconds = secondsPicker.getValue();
-                long totalMillis = (hours * 3600 + minutes * 60 + seconds) * 1000;
-                timerViewModel.setTimer(totalMillis);
-
                 // Reset the timer
-                if (timerViewModel.getTimerState().getValue() == TimerState.RUNNING) {
-                    updateTimerFromPickers();
-                    timerViewModel.setTimer(totalMillis);
-                }
+                resetTimer();
             }
         });
 
