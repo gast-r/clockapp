@@ -4,12 +4,16 @@
     <item
         android:id="@+id/navigation_worldwideclock"
         android:icon="@drawable/navbar_worldwideclock"
-        android:title="@string/title_worldwideclock" />
+        android:title="@string/title_worldwideclock"
+        android:visible="false"
+        />
 
     <item
         android:id="@+id/navigation_alarms"
         android:icon="@drawable/navbar_alarms"
-        android:title="@string/title_alarms" />
+        android:title="@string/title_alarms"
+        android:visible="false"
+        />
 
     <item
         android:id="@+id/navigation_timer"
